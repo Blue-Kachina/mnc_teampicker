@@ -10,6 +10,8 @@ import {
 import { VerifyDiscordRequest, getRandomEmoji, DiscordRequest } from './utils.js';
 import { getShuffledOptions, getResult } from './game.js';
 
+
+
 // Create an express app
 const app = express();
 // Get port, or default to 3000
@@ -25,7 +27,7 @@ const activeGames = {};
  */
 app.post('/interactions', async function (req, res) {
   // Interaction type and data
-  const { type, id, data, member } = req.body;
+  const { type, id, data, member, channel_id } = req.body;
 
   /**
    * Handle verification requests
@@ -81,11 +83,26 @@ app.post('/interactions', async function (req, res) {
     // "challenge" command
     if (name === 'startdraft') {
       // Send a message into the channel where command was triggered from
+
+      const Discord = require('discord.js');
+      const client = new Discord.Client(undefined);
+
+
+
+      const thread = await channel.threads.create({
+        name: 'food-talk',
+        autoArchiveDuration: 3600,
+        reason: 'Needed a separate thread for food',
+      });
+
+      console.log(`Created thread: ${thread.name}`);
+
       return res.send({
         type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
         data: {
           // Fetches a random emoji to send from a helper function
           content: 'Sorry bud, you lose.',
+          
         },
       });
     }
