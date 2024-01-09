@@ -25,7 +25,7 @@ const activeGames = {};
  */
 app.post('/interactions', async function (req, res) {
   // Interaction type and data
-  const { type, id, data } = req.body;
+  const { type, id, data, member } = req.body;
 
   /**
    * Handle verification requests
@@ -48,7 +48,44 @@ app.post('/interactions', async function (req, res) {
         type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
         data: {
           // Fetches a random emoji to send from a helper function
-          content: 'hello world ' + getRandomEmoji(),
+          content: `Hello ${member?.user?.username} `,
+        },
+      });
+    }
+
+    // "challenge" command
+    if (name === 'challenge') {
+      // Send a message into the channel where command was triggered from
+      return res.send({
+        type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+        data: {
+          // Fetches a random emoji to send from a helper function
+          content: 'This is a message with components.',
+          components: [
+            {
+              type: 1,
+              components: [
+                {
+                  type: 2,
+                  label: "Click me!",
+                  style: 1,
+                  custom_id: "click_one",
+                },
+              ]
+            }
+          ]
+        },
+      });
+    }
+
+    // "challenge" command
+    if (name === 'startdraft') {
+      // Send a message into the channel where command was triggered from
+      return res.send({
+        type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+        data: {
+          // Fetches a random emoji to send from a helper function
+          content: 'Sorry bud, you lose.',
         },
       });
     }

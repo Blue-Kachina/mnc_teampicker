@@ -40,6 +40,21 @@ const CHALLENGE_COMMAND = {
   type: 1,
 };
 
-const ALL_COMMANDS = [TEST_COMMAND, CHALLENGE_COMMAND];
+// Command containing options
+const START_DRAFT_COMMAND = {
+  name: 'startdraft',
+  description: 'Start Up A Brand New Draft',
+  options: [
+    {
+      type: 6,
+      name: 'player',
+      description: 'Pick your teammate',
+      required: true,
+    },
+  ],
+  type: 1,
+};
+
+const ALL_COMMANDS = [TEST_COMMAND, CHALLENGE_COMMAND, START_DRAFT_COMMAND];
 
 InstallGlobalCommands(process.env.APP_ID, ALL_COMMANDS);
